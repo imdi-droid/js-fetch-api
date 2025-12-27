@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Detail materi</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="assets/style.css">
+
+</head>
+<body>
+
+  <a href="index.html" class="back">← Kembali ke Home</a>
+
+  <div id="detail"></div>
+
+  <script>
+    const API_URL = "https://sheetdb.io/api/v1/r1ia8781roz6x";
+    const params = new URLSearchParams(window.location.search);
+    console.log(params)
+    const id = params.get("id");
+
+    async function loadDetail() {
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        const materi = data.find(item => item.id === id);
+        const container = document.getElementById("detail");
+
+        if (!materi) {
+          container.innerHTML = "<p>Data tidak ditemukan.</p>";
+          return;
+        }
+
+        container.innerHTML = `
+          <h2>${materi.title}</h2>
+          ${materi.img ? `<img src="${materi.img}" alt="materi Image">` : ""}
+
+          ${materi.video ? `
+            <h4>📹 Video</h4>
+            <video controls src="${materi.video}"></video>
+          ` : ""}
+          
+          <div class="arabic">${materi.hadis}</div>
+
+          <p><strong>Terjemah:</strong><br>${materi.terjemah}</p>
+          <p><strong>Syarah:</strong><br>${materi.syarah}</p>
+
+          ${materi.audio ? `
+            <h4>🔊 Audio</h4>
+            <audio controls src="${materi.audio}"></audio>
+          ` : ""}
+        `;
+
+      } catch (err) {
+        console.error(err);
+        document.getElementById("detail").innerHTML = "<p>Gagal mengambil detail materi periksa API URL.</p>";
+      }
+    }
+
+    loadDetail();
+  </script>
+
+</body>
+</html>

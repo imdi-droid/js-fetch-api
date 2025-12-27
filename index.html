@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Tafsir-Hadis Pilihan</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="assets/style.css">
+
+
+</head>
+<body>
+
+  <h2>📚 Kumpulan Materi Tafsir Hadis</h2>
+
+  <input
+    type="text"
+    id="searchInput"
+    placeholder="Cari tema..."
+    onkeyup="searchTema()"
+  >
+
+  <div class="grid" id="materiGrid"></div>
+
+  <script>
+    const API_URL = "https://sheetdb.io/api/v1/r1ia8781roz6x";
+    let allData = [];
+
+    async function loadMateri() {
+        try {
+          const response = await fetch(API_URL);
+          allData = await response.json();
+
+          renderCards(allData);
+        } catch (err) {
+          console.error(err);
+          document.getElementById("materiGrid").innerHTML = "<p>Gagal mengambil data periksa link API URL</p>";
+        }
+    }
+
+    function renderCards(data) {
+      const grid = document.getElementById("materiGrid");
+      grid.innerHTML = "";
+
+      if (data.length === 0) {
+        grid.innerHTML = "<p>Tidak ada hadis ditemukan.</p>";
+        return;
+      }
+
+      data.forEach(item => {
+        grid.innerHTML += `
+          <div class="card" onclick="openDetail('${item.id}')">
+            <img src="${item.img || 'https://via.placeholder.com/400x200'}" alt="Hadis Image">
+            <h3>${item.title}</h3>
+          </div>
+        `;
+      });
+    }
+
+    function searchTema() {
+      const keyword = document.getElementById("searchInput").value.toLowerCase();
+      const filtered = allData.filter(item =>
+        item.title.toLowerCase().includes(keyword)
+      );
+      renderCards(filtered);
+    }
+
+    function openDetail(id) {
+      window.location.href = `detail.html?id=${id}`;
+    }
+
+    loadMateri();
+  </script>
+
+</body>
+</html>

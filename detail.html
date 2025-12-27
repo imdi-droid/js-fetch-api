@@ -5,7 +5,7 @@
   <title>Detail materi</title>
 
   <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="assets/style.css">
+  <link rel="stylesheet" type="text/css" href="style.css">
 
 </head>
 <body>
@@ -37,7 +37,7 @@
           ${materi.img ? `<img src="${materi.img}" alt="materi Image">` : ""}
 
           ${materi.video ? `
-            <h4>📹 Video</h4>
+            <h4>Video</h4>
             <video controls src="${materi.video}"></video>
           ` : ""}
           
@@ -47,7 +47,7 @@
           <p><strong>Syarah:</strong><br>${materi.syarah}</p>
 
           ${materi.audio ? `
-            <h4>🔊 Audio</h4>
+            <h4>Audio</h4>
             <audio controls src="${materi.audio}"></audio>
           ` : ""}
         `;
